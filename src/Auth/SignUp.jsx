@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     .required("Confirm Password is required"),
   terms: yup
     .boolean()
-    .oneOf([true], "You must accept the terms and conditions"),
+    .oneOf([true],"You must accept the terms and conditions"),
 });
 
 const SignUp = () => {
@@ -40,9 +40,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-image d-flex justify-content-center align-items-center" style={{ minHeight: '200px' }}>
+    <div className="bg-image d-flex " style={{ minHeight: '200px' }}>
       <div className='card-bg'>
-        <h2 className="mb-4 text-center">Sign Up</h2>
+        <h2 className="mb-4 text-center text-white">Sign Up</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow smaller-card">
           <div className="form-group" >
 
@@ -111,16 +111,16 @@ const SignUp = () => {
               className={`form-check-input ${errors.terms ? 'is-invalid' : ''}`}
               {...register("terms")}
             />
-            <label className="form-check-label">
+            <label className="form-check-label text-white">
               I accept the terms and conditions
             </label>
             {errors.terms && <div className="invalid-feedback">{errors.terms.message}</div>}
           </div>
 
-          <button type="submit" className="btn btn-primary btn-block">Create Account</button>
-          <p className="text-center mt-3">
+          <button type="submit" className="btn bg-dark btn-block text-white">Create Account</button>
+          <p className="text-center mt-3 text-white">
             Already a member? Let’s pick up where you left off! ->
-            <Link to="/SignIn"> Sign In</Link>
+            <Link to="/SignIn" className='text-white'> Sign In</Link>
           </p>
         </form>
       </div>

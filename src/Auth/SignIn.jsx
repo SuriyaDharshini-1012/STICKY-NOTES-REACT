@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link } from 'react-router-dom'; 
+import { Link, useNavigate} from 'react-router-dom'; 
 import '../App.css';
 
 const schema = yup.object().shape({
@@ -14,29 +14,20 @@ const SignIn = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
+  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     console.log(data);
-    // Add your authentication logic here
+    // authentication logic
 
-    // Navigate to dashboard or another page after successful login
-    window.location.href = '/dashboard'; // Change '/dashboard' to your desired route
+    // Redirect to NoteForm page
+    navigate('/Note')
   };
 
   return (
     <div className="bg-image d-flex justify-content-center align-items-center" style={{ minHeight: '500px' }}>
-      <div
-        style={{
-          width: '400px',
-          padding: '2rem',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          borderRadius: '10px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
-      >
-        <h2 className="mb-4 text-center">Sign In</h2>
+      <div>
+        <h2 className="mb-4 text-center text-white">Sign In</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow smaller-card">
           <div className="form-group">
             <input
@@ -58,9 +49,9 @@ const SignIn = () => {
             {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
           </div>
 
-          <button type="submit" className="btn btn-primary btn-block">Let's create an account</button>
-          <p className="mt-3 text-center">
-            Become a member - Create an account <Link to="/SignUp">Sign Up</Link>
+          <button type="submit" className="btn btn-dark btn-block">Let's post your idea</button>
+          <p className="mt-3 text-center text-white">
+            Become a member  ->  <Link to="/SignUp" className='text-white'>Create an account</Link>
           </p>
         </form>
       </div>
