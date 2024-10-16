@@ -1,8 +1,8 @@
 body {
-  background-color: #f0f0f0;
+  background-color: hsl(0, 0%, 94%);
   font-family: 'Arial', sans-serif;
   margin: 0;
-  padding: 20px;
+  padding: 0;
 }
 .container {
   display: flex;
@@ -80,10 +80,10 @@ body, html {
   background-size: cover; 
   background-position: center; 
   min-height: 100vh; 
- display: flex; 
+  display: flex; 
   flex-direction: column; 
-  justify-content: center; 
-  align-items: center;  
+  /* justify-content: center; 
+  align-items: center;   */
   position: sticky; 
 }
 .container {
@@ -125,4 +125,25 @@ body, html {
 
 .card:hover {
   transform: scale(1.05);
+}
+.sidebar img{
+  height: 50px;
+  width:50px;
+  cursor:pointer;
+}
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  gap: 40%;
+
+}
+.sidebar_list{
+  display: flex;
+  flex-direction: column;
+  gap:40px;
+  align-items: center;
+}
+.sidebar_list_items{
+  border-radius: 50px;
+  
 }
