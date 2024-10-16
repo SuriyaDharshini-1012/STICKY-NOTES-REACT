@@ -22,7 +22,7 @@ const schema = yup.object().shape({
     .min(6, "Password must be at least 6 characters long"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref('password'), null], "Passwords must match")
+    .oneOf([yup.ref('password')], "Passwords must match")
     .required("Confirm Password is required"),
   terms: yup
     .boolean()
@@ -36,14 +36,14 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // Add logic to handle successful sign up (e.g., API call)
+    
   };
 
   return (
-    <div className="bg-image d-flex " style={{ minHeight: '200px' }}>
+    <div className="bg-image d-flex " >
       <div className='card-bg'>
         <h2 className="mb-4 text-center text-white">Sign Up</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow smaller-card">
+        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow ">
           <div className="form-group" >
 
             <input

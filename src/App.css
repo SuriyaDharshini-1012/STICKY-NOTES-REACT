@@ -76,7 +76,7 @@ body, html {
   margin: 0;
 }
 .bg-image {
-  background-image: url('./asserts/back.png'); 
+  background-image: url('./assets/back.png'); 
   background-size: cover; 
   background-position: center; 
   min-height: 100vh; 

@@ -1,4 +1,4 @@
-import react from 'React';
+
 
 const TextArea=({placeholder,value,onChange,className})=>{
 
@@ -8,7 +8,7 @@ const TextArea=({placeholder,value,onChange,className})=>{
             className={className}
             value={value}
             placeholder={placeholder}
-            onChange={handleChange}
+            onChange={onChange}
 
             
             ></textarea>

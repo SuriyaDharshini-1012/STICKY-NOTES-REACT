@@ -5,13 +5,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark">
+    <nav className="navbar navbar-expand-lg ">
       <div className="container">
-        <Link className="navbar-brand" to="/">
-          <i className="bi bi-sticky-fill me-2"></i> Post-it-Note
-        </Link>
+        <h4 className="navbar-brand text-white">
+           Post-it-Note
+        </h4>
         <button
-          className="navbar-toggler"
+           className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
@@ -25,10 +25,6 @@ const Navbar = () => {
           <ul className="navbar-nav">
           <li className="nav-item">
               <Link className="nav-link text-white" to="/">Home</Link>
-            </li>
-            
-            <li className="nav-item">
-              <Link className="nav-link text-white" to="/notes">My Notes</Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link text-white" to="/logout">Logout</Link>

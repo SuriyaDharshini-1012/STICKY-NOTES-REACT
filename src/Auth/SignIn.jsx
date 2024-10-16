@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { Link, useNavigate} from 'react-router-dom'; 
 import '../App.css';
 
+
 const schema = yup.object().shape({
   email: yup.string().email("Enter a valid email").required("Email is required"),
   password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters long"),
@@ -18,9 +19,7 @@ const SignIn = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // authentication logic
-
-    // Redirect to NoteForm page
+    
     navigate('/Note')
   };
 
@@ -28,7 +27,7 @@ const SignIn = () => {
     <div className="bg-image d-flex justify-content-center align-items-center" style={{ minHeight: '500px' }}>
       <div>
         <h2 className="mb-4 text-center text-white">Sign In</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow smaller-card">
+        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow">
           <div className="form-group">
             <input
               type="email"
@@ -51,7 +50,7 @@ const SignIn = () => {
 
           <button type="submit" className="btn btn-dark btn-block">Let's post your idea</button>
           <p className="mt-3 text-center text-white">
-            Become a member  ->  <Link to="/SignUp" className='text-white'>Create an account</Link>
+            Become a member ->  <Link to="/SignUp" className='text-white'>Create an account</Link>
           </p>
         </form>
       </div>
