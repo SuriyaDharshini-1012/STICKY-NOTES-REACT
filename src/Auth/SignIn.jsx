@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom'; 
 import '../App.css';
-
+import { useSigninMutation } from '../redux/Service/SignUpApi'
 const schema = yup.object().shape({
   email: yup.string().email("Enter a valid email").required("Email is required"),
   password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters long"),
@@ -15,6 +15,7 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
+  const [signin] = useSigninMutation();
 
   const onSubmit = (data) => {
     console.log(data);

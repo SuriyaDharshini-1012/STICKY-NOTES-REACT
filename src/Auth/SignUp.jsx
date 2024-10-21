@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom'; 
 import '../App.css';
+import { useSignupMutation } from '../redux/Service/SignUpApi';
 
 const schema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
@@ -33,7 +34,7 @@ const SignUp = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
-
+  const [signup] = useSignupMutation();
   const onSubmit = (data) => {
     console.log(data);
   };
