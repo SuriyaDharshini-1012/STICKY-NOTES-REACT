@@ -26,7 +26,7 @@ const schema = yup.object().shape({
     .required("Confirm Password is required"),
   terms: yup
     .boolean()
-    .oneOf([true],"You must accept the terms and conditions"),
+    .oneOf([true], "You must accept the terms and conditions"),
 });
 
 const SignUp = () => {
@@ -36,74 +36,33 @@ const SignUp = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    
   };
 
+  const formFields = [
+    { name: 'firstName', type: 'text', placeholder: 'First Name' },
+    { name: 'lastName', type: 'text', placeholder: 'Last Name' },
+    { name: 'phoneNumber', type: 'tel', placeholder: 'Phone Number' },
+    { name: 'email', type: 'email', placeholder: 'Email' },
+    { name: 'password', type: 'password', placeholder: 'Password' },
+    { name: 'confirmPassword', type: 'password', placeholder: 'Confirm Password' },
+  ];
+
   return (
-    <div className="bg-image d-flex " >
+    <div className="bg-image d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
       <div className='card-bg'>
         <h2 className="mb-4 text-center text-white">Sign Up</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow ">
-          <div className="form-group" >
-
-            <input
-              type="text"
-              className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-              {...register("firstName")}
-              placeholder="First Name"
-            />
-            {errors.firstName && <div className="invalid-feedback">{errors.firstName.message}</div>}
-          </div>
-
-          <div className="form-group">
-            <input
-              type="text"
-              className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-              {...register("lastName")}
-              placeholder="Last Name"
-            />
-            {errors.lastName && <div className="invalid-feedback">{errors.lastName.message}</div>}
-          </div>
-
-          <div className="form-group">
-            <input
-              type="tel"
-              className={`form-control ${errors.phoneNumber ? 'is-invalid' : ''}`}
-              {...register("phoneNumber")}
-              placeholder="Phone Number"
-            />
-            {errors.phoneNumber && <div className="invalid-feedback">{errors.phoneNumber.message}</div>}
-          </div>
-
-          <div className="form-group">
-            <input
-              type="email"
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-              {...register("email")}
-              placeholder="Email"
-            />
-            {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
-          </div>
-
-          <div className="form-group">
-            <input
-              type="password"
-              className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-              {...register("password")}
-              placeholder="Password"
-            />
-            {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
-          </div>
-
-          <div className="form-group">
-            <input
-              type="password"
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-              {...register("confirmPassword")}
-              placeholder="Confirm Password"
-            />
-            {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
-          </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow">
+          {formFields.map(field => (
+            <div className="form-group" key={field.name}>
+              <input
+                type={field.type}
+                className={`form-control ${errors[field.name] ? 'is-invalid' : ''}`}
+                {...register(field.name)}
+                placeholder={field.placeholder}
+              />
+              {errors[field.name] && <div className="invalid-feedback">{errors[field.name].message}</div>}
+            </div>
+          ))}
 
           <div className="form-group form-check">
             <input

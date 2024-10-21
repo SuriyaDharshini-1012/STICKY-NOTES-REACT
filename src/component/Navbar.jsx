@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg ">
       <div className="container">
-        <h4 className="navbar-brand text-white">
+        <h4 className="navbar-brand text-dark">
            Post-it-Note
         </h4>
         <button
@@ -27,7 +27,7 @@ const Navbar = () => {
               <Link className="nav-link text-white" to="/">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link text-white" to="/logout">Logout</Link>
+              <Link className="nav-link text-white" to="/logout">Profile</Link>
             </li>
           </ul>
         </div>
