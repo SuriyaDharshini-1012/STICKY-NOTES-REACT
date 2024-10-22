@@ -3,23 +3,44 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom'; 
+import { toast } from 'react-toastify'; 
 import '../App.css';
-import { useSigninMutation } from '../redux/Service/SignUpApi'
+import { useSigninMutation } from '../redux/Service/SignUpApi';
+
 const schema = yup.object().shape({
   email: yup.string().email("Enter a valid email").required("Email is required"),
   password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters long"),
 });
 
 const SignIn = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
   const [signin] = useSigninMutation();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate('/Note');
+  const onSubmit = async (data) => {
+    try {
+      const result = await signin(data);
+      console.log("API Response: ", result);
+
+      if (result?.data?.statusCode === 200) {
+        const { accessToken, refreshToken } = result.data; 
+        
+        sessionStorage.setItem('Token', accessToken);
+        sessionStorage.setItem('RefreshToken', refreshToken); 
+
+        toast.success("Login successful!", { autoClose: 1000 });
+        setTimeout(() => navigate('/note'), 1000);
+        reset(); 
+      } else {
+        const errorMessage = result.data.message || "Login failed. Please try again.";
+        toast.error(errorMessage, { autoClose: 1000 });
+      }
+    } catch (error) {
+      console.error("Error during login: ", error.message);
+      toast.error(error.message || "An error occurred during submission. Please try again.", { autoClose: 500 });
+    }
   };
 
   return (
@@ -49,7 +70,7 @@ const SignIn = () => {
 
           <button type="submit" className="btn btn-dark btn-block">Let's post your idea</button>
           <p className="mt-3 text-center text-white">
-            Become a member -> <Link to="/SignUp" className='text-white'>Create an account</Link>
+            Become a member  <Link to="/SignUp" className='text-white'>Create an account</Link>
           </p>
         </form>
       </div>
