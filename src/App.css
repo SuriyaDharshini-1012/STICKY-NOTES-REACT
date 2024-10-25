@@ -77,7 +77,7 @@ body, html {
 }
 .bg-image {
   background-image: url('../src/assets/f\ image.avif'); 
-  background-color: #EFDD6F;
+  /* background-color: #EFDD6F; */
   background-size: cover; 
   background-position: center; 
   min-height: 100vh; 

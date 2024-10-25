@@ -1,103 +1,135 @@
 import React, { useState } from 'react';
-import '../App';
+import { useCreateNoteMutation } from '../redux/Service/NotesApi';
+import { useAuth } from '../Auth/AuthContext'; // Import the Auth hook
+
 const colors = ['LightBlue', 'Maroon', 'Violet', 'Deep Emerald Green', 'LightCoral'];
 
 const Note = () => {
-  const [notes, setNotes] = useState([]);
-  const [noteText, setNoteText] = useState('');
-  const [selectedColor, setSelectedColor] = useState('yellow');
-  const [isEditing, setIsEditing] = useState(null);
+    const { userId } = useAuth(); // Get userId from AuthContext
+    const [notes, setNotes] = useState([]);
+    const [noteText, setNoteText] = useState('');
+    const [noteTitle, setNoteTitle] = useState('');
+    const [selectedColor, setSelectedColor] = useState('yellow');
+    const [isPinned, setIsPinned] = useState(false);
+    const [createNote] = useCreateNoteMutation();
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
 
-  const addNote = () => {
-    if (noteText) {
-      const currentDateTime = new Date().toLocaleString();
-      if (isEditing !== null) {
-        const updatedNotes = notes.map((note, index) =>
-          index === isEditing ? { ...note, text: noteText, color: selectedColor } : note
-        );
-        setNotes(updatedNotes);
-        setIsEditing(null);
-      } else {
-        setNotes([...notes, { text: noteText, color: selectedColor, createdAt: currentDateTime }]);
-      }
-      setNoteText('');
-      setSelectedColor('yellow');
-    }
-  };
+    const addNote = async () => {
+        if (!noteText || !noteTitle) {
+            setMessage("Title and content must not be empty.");
+            return;
+        }
 
-  const deleteNote = (index) => {
-    const newNotes = notes.filter((_, i) => i !== index);
-    setNotes(newNotes);
-  };
+        if (!userId) {
+            setMessage("User ID is not available.");
+            return;
+        }
 
-  const editNote = (index) => {
-    setNoteText(notes[index].text);
-    setSelectedColor(notes[index].color);
-    setIsEditing(index);
-  };
+        const newNote = {
+            title: noteTitle,
+            content: noteText,
+            colour: selectedColor,
+            isPinned,
+            user: { id: userId }, 
+        };
 
-  return (
-    <div className="bg-image p-3 rounded">
-      <h1 className="text-center">Lets start</h1>
-      
+        setLoading(true);
 
-      <div className="card mb-4" style={{ maxWidth: '400px', margin: 'auto' }}>
-        <div className="card-body">
-          <div className="mb-3">
-            <textarea
-              type="text"
-              className="form-control form-control-sm"
-              placeholder="Content"
-              value={noteText}
-              onChange={(e) => setNoteText(e.target.value)}
-              style={{ height: '80px' }} 
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label text-dark">Select Color</label>
-            <select
-              className="form-select form-select-sm"
-              value={selectedColor}
-              onChange={(e) => setSelectedColor(e.target.value)}
-            >
-              {colors.map((color, index) => (
-                <option key={index} value={color}>
-                  {color.charAt(0).toUpperCase() + color.slice(1)}
-                </option>
-              ))}
-            </select>
-          </div>
-          <button className="btn btn-primary btn-sm" onClick={addNote}>
-            {isEditing !== null ? 'Update Note' : 'Add Note'}
-          </button>
-        </div>
-      </div>
+        try {
+            console.log("User ID:", userId);
+            const createdNote = await createNote(newNote).unwrap();
+            setNotes((prevNotes) => [...prevNotes, createdNote]);
+            setMessage("Note created successfully!");
+        } catch (error) {
+            console.error("Failed to create note: ", error);
+            setMessage("Failed to create note. Please try again.");
+        } finally {
+            setLoading(false);
+            resetForm();
+        }
+    };
 
-      {/* Notes Display */}
-      <div className="row mt-3">
-        {notes.map((note, index) => (
-          <div className="col-md-4 mb-4" key={index}>
-            <div className="card" style={{ backgroundColor: note.color, maxWidth: '250px', minHeight: '150px' }}>
-              <div className="card-body" style={{ padding: '10px' }}>
-                <p className="card-text" style={{ fontSize: '0.9rem' }}>{note.text}</p>
-                <p className="card-text text-muted" style={{ fontSize: '0.8rem' }}>
-                  Created at: {note.createdAt}
-                </p>
-                <div className="d-flex justify-content-between">
-                  <button className="btn btn-secondary btn-sm" onClick={() => editNote(index)}>
-                    Edit
-                  </button>
-                  <button className="btn btn-danger btn-sm" onClick={() => deleteNote(index)}>
-                    Delete
-                  </button>
+    const resetForm = () => {
+        setNoteText('');
+        setNoteTitle('');
+        setSelectedColor('yellow');
+        setIsPinned(false);
+    };
+
+    return (
+        <div className="bg-image p-3 rounded">
+            <h1 className="text-center">Let's Start</h1>
+            {message && <div className="alert alert-info">{message}</div>}
+
+            <div className="card mb-4" style={{ maxWidth: '400px', margin: 'auto' }}>
+                <div>
+                    <div className="mb-3">
+                        <input
+                            type="text"
+                            className="form-control form-control-sm"
+                            placeholder="Title"
+                            value={noteTitle}
+                            onChange={(e) => setNoteTitle(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <textarea
+                            className="form-control form-control-sm"
+                            placeholder="Content"
+                            value={noteText}
+                            onChange={(e) => setNoteText(e.target.value)}
+                            style={{ height: '80px' }}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label text-dark">Select Color</label>
+                        <select
+                            className="form-select form-select-sm"
+                            value={selectedColor}
+                            onChange={(e) => setSelectedColor(e.target.value)}
+                        >
+                            {colors.map((color, index) => (
+                                <option key={index} value={color}>
+                                    {color.charAt(0).toUpperCase() + color.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mb-3">
+                        <label>
+                            <input
+                                type="checkbox"
+                                checked={isPinned}
+                                onChange={(e) => setIsPinned(e.target.checked)}
+                            />
+                            Pin Note
+                        </label>
+                    </div>
+                    <button className="btn btn-primary btn-sm" onClick={addNote} disabled={loading}>
+                        {loading ? 'Adding...' : 'Add Note'}
+                    </button>
                 </div>
-              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+
+            <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1030 }}>
+                {notes.map((note, index) => (
+                    <div className="mb-2" style={{ backgroundColor: note.colour, minWidth: '250px' }} key={index}>
+                        <div style={{ padding: '10px' }}>
+                            <h5>{note.title}</h5>
+                            <p style={{ fontSize: '0.9rem' }}>{note.content}</p>
+                            <p className="text-muted" style={{ fontSize: '0.8rem' }}>
+                                Created at: {note.createdAt}
+                            </p>
+                            <p className="card-text" style={{ fontSize: '0.8rem' }}>
+                                {note.isPinned ? 'Pinned' : ''}
+                            </p>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 export default Note;

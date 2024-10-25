@@ -2,10 +2,11 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Link, useNavigate } from 'react-router-dom'; 
-import { toast } from 'react-toastify'; 
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import '../App.css';
 import { useSigninMutation } from '../redux/Service/SignUpApi';
+import { useAuth } from '../Auth/AuthContext';
 
 const schema = yup.object().shape({
   email: yup.string().email("Enter a valid email").required("Email is required"),
@@ -18,27 +19,39 @@ const SignIn = () => {
   });
   const navigate = useNavigate();
   const [signin] = useSigninMutation();
+  const { setUserId } = useAuth();
 
   const onSubmit = async (data) => {
     try {
       const result = await signin(data);
-      console.log("API Response: ", result);
+      console.log("API Response: ", result); // Log the entire response
 
-      if (result?.data?.statusCode === 200) {
+      // Check if the result and result.data exist
+      if (result?.data) {
         const { accessToken, refreshToken } = result.data; 
-        
-        sessionStorage.setItem('Token', accessToken);
-        sessionStorage.setItem('RefreshToken', refreshToken); 
 
-        toast.success("Login successful!", { autoClose: 1000 });
-        setTimeout(() => navigate('/note'), 1000);
-        reset(); 
+        if (accessToken) {
+          // Store tokens in localStorage
+          localStorage.setItem('Token', accessToken);
+          localStorage.setItem('RefreshToken', refreshToken);
+          console.log("Stored Token: ", accessToken); // Log the stored token
+
+          // Decode the token to get the user ID
+          const payload = JSON.parse(atob(accessToken.split('.')[1]));
+          setUserId(payload.UserId); // Set userId in Auth context
+
+          toast.success("Login successful!", { autoClose: 1000 });
+          setTimeout(() => navigate('/note'), 1000);
+          reset();
+        } else {
+          toast.error("No access token found in the response.", { autoClose: 1000 });
+        }
       } else {
-        const errorMessage = result.data.message || "Login failed. Please try again.";
+        const errorMessage = result.error?.data?.message || "Login failed. Please try again.";
         toast.error(errorMessage, { autoClose: 1000 });
       }
     } catch (error) {
-      console.error("Error during login: ", error.message);
+      console.error("Error during login: ", error);
       toast.error(error.message || "An error occurred during submission. Please try again.", { autoClose: 500 });
     }
   };
@@ -70,7 +83,7 @@ const SignIn = () => {
 
           <button type="submit" className="btn btn-dark btn-block">Let's post your idea</button>
           <p className="mt-3 text-center text-white">
-            Become a member  <Link to="/SignUp" className='text-white'>Create an account</Link>
+            Become a member <Link to="/SignUp" className='text-white'>Create an account</Link>
           </p>
         </form>
       </div>

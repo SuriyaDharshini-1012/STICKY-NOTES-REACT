@@ -39,22 +39,22 @@ const SignUp = () => {
     try {
         const response = await signup(data).unwrap();
         
-        // Log the entire response including status and headers
+        
         console.log("Sign-Up Response: ", response);
         
-        // Check if you can access the response metadata
+       
         console.log("Response Status: ", response.status);
         console.log("Response Headers: ", response.headers);
 
-        // If successful, show a success message
+        
         toast.success("SignUp done Successfully", {
             autoClose: 500,
-            onClose: () => navigate('/'), // Redirect on success
+            onClose: () => navigate('/'), 
         });
         
         reset();
     } catch (err) {
-        console.error("Error during signup: ", err); // Log the error for debugging
+        console.error("Error during signup: ", err);
         toast.error("Signup failed. Please try again.");
     }
 };
@@ -90,7 +90,7 @@ const SignUp = () => {
           <input
     type="checkbox"
     className={`form-check-input ${errors.termsAccepted ? 'is-invalid' : ''}`}
-    {...register("termsAccepted", { required: true })} // Marking as required
+    {...register("termsAccepted", { required: true })} 
 />
 
             <label className="form-check-label text-white">

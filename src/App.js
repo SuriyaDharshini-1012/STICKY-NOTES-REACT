@@ -8,9 +8,7 @@ import Note from './pages/Note';
 const App = () => {
   return (
     <Router>
-      
       <Routes>
-        
         <Route path="/" element={<Home />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
