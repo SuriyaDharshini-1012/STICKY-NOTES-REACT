@@ -15,30 +15,33 @@ export const notesApi = createApi({
   }),
   endpoints: (builder) => ({
     createNote: builder.mutation({
-      query: ({
-        title,
-        content,
-        colour,
-        isPinned,
-       
-      }) => ({
-        url: 'create-note',  
-        method: 'POST',      
-        
+      query: ({ title, content, colour, isPinned }) => ({
+        url: 'create-note',
+        method: 'POST',
         params: {
           title,
           content,
           colour,
           isPinned,
-        
         },
-       
+      }),
+    }),
+    updateNote: builder.mutation({
+      query: ({ id, title, content, colour, isPinned }) => ({
+        url: `update-note/${id}`,
+        method: 'PUT',
         body: {
-          title,       
-          content, 
+          title,
+          content,
           colour,
           isPinned,
         },
+      }),
+    }),
+    deleteNote: builder.mutation({
+      query: (id) => ({
+        url: `delete-note/${id}`,
+        method: 'DELETE',
       }),
     }),
   }),
@@ -46,4 +49,6 @@ export const notesApi = createApi({
 
 export const {
   useCreateNoteMutation,
+  useDeleteNoteMutation,
+  useUpdateNoteMutation,
 } = notesApi;

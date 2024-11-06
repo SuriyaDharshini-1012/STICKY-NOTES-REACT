@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCreateNoteMutation } from '../redux/Service/NotesApi';  
+import { useCreateNoteMutation, useDeleteNoteMutation } from '../redux/Service/NotesApi';
 
 const colors = ['LightBlue', 'Maroon', 'Violet', 'Deep Emerald Green', 'LightCoral'];
 
@@ -10,16 +10,17 @@ const Note = () => {
   const [selectedColor, setSelectedColor] = useState('LightBlue');
   const [isPinned, setIsPinned] = useState(false);
   const [createNote] = useCreateNoteMutation();
+  const [deleteNoteApi] = useDeleteNoteMutation(); 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
-  
+  // Add a new note
   const addNote = async () => {
     if (!noteText || !noteTitle) {
-      setMessage("Title and content must not be empty.");
+      setMessage('Title and content must not be empty.');
       return;
     }
-   
+
     const newNote = {
       title: noteTitle,
       content: noteText,
@@ -30,26 +31,41 @@ const Note = () => {
     setLoading(true);
 
     try {
-      
       const createdNote = await createNote(newNote).unwrap();
       setNotes((prevNotes) => [...prevNotes, createdNote]);
-      setMessage("Note created successfully!");
+      setMessage('Note created successfully!');
+      console.log(createdNote);
     } catch (error) {
-      console.error("Failed to create note:", error);
-      
-     
-      if (error?.data?.message) {
-        setMessage(error.data.message); 
-      } else {
-        setMessage("Failed to create note. Please try again.");
-      }
+      console.error('Failed to create note:', error);
+      setMessage('Failed to create note. Please try again.');
     } finally {
       setLoading(false);
       resetForm();
     }
   };
 
-  
+ 
+  const deleteNote = async (id) => {
+    console.log(id);
+    try {
+      
+      setNotes((prevNotes) => prevNotes.filter(note => note.id !== id));
+
+     
+      await deleteNoteApi(id).unwrap();
+
+      setMessage('Note deleted successfully!');
+    } catch (error) {
+      console.error('Failed to delete note:', error);
+
+
+      setNotes((prevNotes) => [...prevNotes]);
+
+      setMessage('Failed to delete note. Please try again.');
+    }
+  };
+
+ 
   const resetForm = () => {
     setNoteText('');
     setNoteTitle('');
@@ -62,6 +78,7 @@ const Note = () => {
       <h1 className="text-center">Let's Start</h1>
       {message && <div className="alert alert-info">{message}</div>}
 
+     
       <div className="card mb-4" style={{ maxWidth: '400px', margin: 'auto' }}>
         <div>
           <div className="mb-3">
@@ -112,21 +129,38 @@ const Note = () => {
         </div>
       </div>
 
-      <div className="position-fixed bottom-0 end-0 p-3" style={{ zIndex: 1030 }}>
-        {notes.map((note, index) => (
-          <div className="mb-2" style={{ backgroundColor: note.colour, minWidth: '250px' }} key={index}>
-            <div style={{ padding: '10px' }}>
-              <h5>{note.title}</h5>
-              <p style={{ fontSize: '0.9rem' }}>{note.content}</p>
-              <p className="text-muted" style={{ fontSize: '0.8rem' }}>
-                Created at: {new Date(note.createdAt).toLocaleString()}
-              </p>
-              <p className="card-text" style={{ fontSize: '0.8rem' }}>
-                {note.isPinned ? 'Pinned' : ''}
-              </p>
+      {/* Display list of notes */}
+      <div className="notes-container mt-4">
+        <h2>Notes</h2>
+        {notes.length === 0 && <p>No notes available.</p>}
+        <div className="row">
+          {notes.map((note) => (
+            <div key={note.id} className="col-12 col-md-4 mb-3">
+              <div
+                className="card"
+                style={{
+                  backgroundColor: note.colour,
+                  borderRadius: '10px',
+                  padding: '15px',
+                  minHeight: '200px',
+                }}
+              >
+                <h5>{note.title}</h5>
+                <p>{note.content}</p>
+                <div className="d-flex justify-content-between">
+                  <span>{note.isPinned ? 'Pinned' : ''}</span>
+                  <span>Created at: {note.createdAt || 'N/A'}</span>
+                </div>
+                <button
+                  className="btn btn-danger btn-sm mt-2"
+                  onClick={() => deleteNote(note.id)} // Pass note.id to delete
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
