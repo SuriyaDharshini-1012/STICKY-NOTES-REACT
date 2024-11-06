@@ -2,9 +2,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { SignupApi } from './Service/SignUpApi';
 import { notesApi } from './Service/NotesApi';
 
-
-
-
 const store = configureStore({
   reducer:{
     [SignupApi.reducerPath]:SignupApi.reducer,

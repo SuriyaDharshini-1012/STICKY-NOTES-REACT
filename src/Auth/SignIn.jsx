@@ -3,11 +3,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import '../App.css';
 import { useSigninMutation } from '../redux/Service/SignUpApi';
-import { useAuth } from '../Auth/AuthContext';
 
+
+// Validation schema for the form fields using yup
 const schema = yup.object().shape({
   email: yup.string().email("Enter a valid email").required("Email is required"),
   password: yup.string().required("Password is required").min(6, "Password must be at least 6 characters long"),
@@ -15,44 +14,40 @@ const schema = yup.object().shape({
 
 const SignIn = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema), // Integrating yup validation
   });
   const navigate = useNavigate();
-  const [signin] = useSigninMutation();
-  const { setUserId } = useAuth();
+  
+  const [signin, { isLoading, isError, error }] = useSigninMutation(); // Mutation hook for sign-in API call
 
   const onSubmit = async (data) => {
     try {
-      const result = await signin(data);
-      console.log("API Response: ", result); // Log the entire response
+      const result = await signin(data).unwrap();  // Make the API call
 
-      // Check if the result and result.data exist
-      if (result?.data) {
-        const { accessToken, refreshToken } = result.data; 
-
-        if (accessToken) {
-          // Store tokens in localStorage
-          localStorage.setItem('Token', accessToken);
-          localStorage.setItem('RefreshToken', refreshToken);
-          console.log("Stored Token: ", accessToken); // Log the stored token
-
-          // Decode the token to get the user ID
-          const payload = JSON.parse(atob(accessToken.split('.')[1]));
-          setUserId(payload.UserId); // Set userId in Auth context
-
-          toast.success("Login successful!", { autoClose: 1000 });
-          setTimeout(() => navigate('/note'), 1000);
-          reset();
-        } else {
-          toast.error("No access token found in the response.", { autoClose: 1000 });
-        }
+      // Log the result to understand the structure
+      console.log('Signin result:', result);
+  
+      // Check for the presence of accessToken inside result.data
+      const { accessToken, refreshToken } = result?.data || {}; // Access tokens from result.data
+  
+      if (accessToken) {
+        // Store the accessToken and refreshToken in localStorage
+        localStorage.setItem('Token', accessToken);
+        localStorage.setItem('RefreshToken', refreshToken);
+  
+        reset();  // Reset the form after successful login
+        console.log("User signed in successfully, navigating to /note");
+        
+        // Navigate directly to /note page
+        navigate('/note');
       } else {
-        const errorMessage = result.error?.data?.message || "Login failed. Please try again.";
-        toast.error(errorMessage, { autoClose: 1000 });
+        console.error('Access token not found in the result.');
       }
     } catch (error) {
-      console.error("Error during login: ", error);
-      toast.error(error.message || "An error occurred during submission. Please try again.", { autoClose: 500 });
+      console.error('Login failed:', error);
+      if (error?.data) {
+        console.error('Error data:', error.data);  // Log error details from the API
+      }
     }
   };
 
@@ -61,6 +56,7 @@ const SignIn = () => {
       <div className='mt-0'>
         <h2 className="mt-1 text-center text-white">Sign In</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow">
+          {/* Email Input Field */}
           <div className="form-group">
             <input
               type="email"
@@ -71,6 +67,7 @@ const SignIn = () => {
             {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
           </div>
 
+          {/* Password Input Field */}
           <div className="form-group">
             <input
               type="password"
@@ -81,7 +78,19 @@ const SignIn = () => {
             {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
           </div>
 
-          <button type="submit" className="btn btn-dark btn-block">Let's post your idea</button>
+          {/* Submit Button */}
+          <button type="submit" className="btn btn-dark btn-block" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : "Let's post your idea"}
+          </button>
+
+          {/* Display error message if login fails */}
+          {isError && (
+            <div className="alert alert-danger mt-3">
+              <strong>Error:</strong> {error?.data?.message || 'Login failed. Please try again.'}
+            </div>
+          )}
+
+          {/* Link to the SignUp page */}
           <p className="mt-3 text-center text-white">
             Become a member <Link to="/SignUp" className='text-white'>Create an account</Link>
           </p>

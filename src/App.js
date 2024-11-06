@@ -1,9 +1,9 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignUp from './Auth/SignUp';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from '../src/pages/Home'
 import SignIn from './Auth/SignIn';
-import Home from './pages/Home';
-import Note from './pages/Note';
+import SignUp from './Auth/SignUp'; 
+import Note from './pages/Note'
 
 const App = () => {
   return (
@@ -12,7 +12,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/note" element={<Note />} />
+        <Route path="Note" element={<Note/>} />
       </Routes>
     </Router>
   );

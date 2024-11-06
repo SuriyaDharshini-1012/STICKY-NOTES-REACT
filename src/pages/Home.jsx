@@ -39,8 +39,10 @@ const Home = () => {
       <h2 className="mt-4">Get Started!</h2>
       <p>Join our community and start using sticky notes today!</p>
       <div className="mt-1">
-        <Link to="/SignIn" className="btn text-dark">Sign In</Link>
-        <Link to="/SignUp" className="btn text-dark">Sign Up</Link>
+      <Link to="/SignIn" className="text-dark">Sign In</Link><br></br>
+    <Link to="/SignUp" className="text-dark">Sign Up</Link>
+
+
       </div>
     </div>
   );
