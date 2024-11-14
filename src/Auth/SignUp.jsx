@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import '../App.css';
 import { useSignupMutation } from '../redux/Service/SignUpApi';
 
-// Validation schema
 const schema = yup.object().shape({
   firstName: yup.string().required("First name is required"),
   lastName: yup.string().required("Last name is required"),
@@ -37,28 +36,23 @@ const SignUp = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-        const response = await signup(data).unwrap();
-        
-        
-        console.log("Sign-Up Response: ", response);
-        
-       
-        console.log("Response Status: ", response.status);
-        console.log("Response Headers: ", response.headers);
-
-        
-        toast.success("SignUp done Successfully", {
-            autoClose: 500,
-            onClose: () => navigate('/'), 
-        });
-        
-        reset();
+      const response = await signup(data).unwrap();
+      console.log("Sign-Up Response: ", response);
+      console.log("Response Status: ", response.status);
+      console.log("Response Headers: ", response.headers);
+      
+      toast.success("Account created successfully!", {
+        autoClose: 3000,
+        onClose: () => navigate('/SignIn'), 
+      });
+  
+      reset();
     } catch (err) {
-        console.error("Error during signup: ", err);
-        toast.error("Signup failed. Please try again.");
+      console.error("Error during signup: ", err);
+      toast.error("Signup failed. Please try again.");
     }
-};
-
+  };
+  
 
 
   const formFields = [

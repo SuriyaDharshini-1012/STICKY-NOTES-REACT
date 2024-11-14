@@ -10,8 +10,8 @@ const Note = () => {
   const [selectedColor, setSelectedColor] = useState('LightBlue');
   const [isPinned, setIsPinned] = useState(false);
   const [message, setMessage] = useState('');
-  const [editingNote, setEditingNote] = useState(null); // Track which note is being edited
-  const { data: notes = [], error, isLoading: isFetchingNotes, refetch } = useGetNotesQuery(); // Added refetch
+  const [editingNote, setEditingNote] = useState(null); 
+  const { data: notes = [], error, isLoading: isFetchingNotes, refetch } = useGetNotesQuery(); 
   const [createNote, { isLoading: isCreating }] = useCreateNoteMutation();
   const [deleteNoteApi, { isLoading: isDeleting }] = useDeleteNoteMutation();
   const [updateNoteApi, { isLoading: isUpdating }] = useUpdateNoteMutation();
@@ -23,7 +23,7 @@ const Note = () => {
     }
 
     const newNote = {
-      title: noteTitle,
+      title: noteTitle,    
       content: noteText,
       colour: selectedColor,
       isPinned,
@@ -32,6 +32,7 @@ const Note = () => {
     try {
       await createNote(newNote).unwrap();
       setMessage('Note created successfully!');
+     
     } catch (error) {
       console.error('Failed to create note:', error);
       setMessage('Failed to create note. Please try again.');
@@ -57,9 +58,7 @@ const Note = () => {
     try {
       await updateNoteApi(updatedNote).unwrap();
       setMessage('Note updated successfully!');
-      setEditingNote(null); // Clear the editing state
-
-      // Option 1: Refetch the notes from the API after update
+      setEditingNote(null); 
       refetch();
 
     } catch (error) {
@@ -77,11 +76,8 @@ const Note = () => {
     try {
       await deleteNoteApi(id).unwrap();
       setMessage('Note deleted successfully!');
-
-      // Remove the deleted note from the UI immediately by filtering it out
       const updatedNotes = notes.filter(note => note.id !== id);
-      refetch(); // Optionally refetch the data, if needed for other reasons
-
+      refetch(); 
     } catch (error) {
       console.error('Failed to delete note:', error);
       setMessage('Failed to delete note. Please try again.');
@@ -142,7 +138,8 @@ const Note = () => {
               ))}
             </select>
           </div>
-          <div className="mb-3">
+          <span>
+          <div className="d inline flex">
             <label>
               <input
                 type="checkbox"
@@ -152,12 +149,14 @@ const Note = () => {
               Pin Note
             </label>
           </div>
+          </span>
+          
           {editingNote ? (
-            <button className="btn btn-primary btn-sm" onClick={updateNote} disabled={isUpdating}>
+            <button className="btn bg-dark btn-block text-white" onClick={updateNote} disabled={isUpdating}>
               {isUpdating ? 'Updating...' : 'Update Note'}
             </button>
           ) : (
-            <button className="btn btn-primary btn-sm" onClick={addNote} disabled={isCreating}>
+            <button className="btn bg-dark btn-block text-white" onClick={addNote} disabled={isCreating}>
               {isCreating ? 'Adding...' : 'Add Note'}
             </button>
           )}
@@ -165,8 +164,7 @@ const Note = () => {
       </div>
 
       <div className="notes-container mt-4">
-        <h2>Notes</h2>
-        {isFetchingNotes ? (
+       {isFetchingNotes ? (
           <p>Loading notes...</p>
         ) : error ? (
           <p>Error fetching notes. Please try again.</p>
@@ -193,13 +191,13 @@ const Note = () => {
                   </div>
                   <div className="d-flex justify-content-between mt-2">
                     <button
-                      className="btn btn-warning btn-sm"
+                      className="btn bg-dark btn-block text-white"
                       onClick={() => startEditing(note)}
                     >
                       Edit
                     </button>
                     <button
-                      className="btn btn-danger btn-sm"
+                      className="btn bg-dark btn-block text-white"
                       onClick={() => deleteNote(note.id)}
                       disabled={isDeleting}
                     >
