@@ -43,7 +43,7 @@ const SignUp = () => {
       
       toast.success("Account created successfully!", {
         autoClose: 3000,
-        onClose: () => navigate('/SignIn'), 
+        onClose: () => navigate('/Home'), 
       });
   
       reset();
@@ -52,8 +52,6 @@ const SignUp = () => {
       toast.error("Signup failed. Please try again.");
     }
   };
-  
-
 
   const formFields = [
     { name: 'firstName', type: 'text', placeholder: 'First Name' },
@@ -65,12 +63,12 @@ const SignUp = () => {
   ];
 
   return (
-    <div className="bg-image d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+    <div className=" bg-image d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
       <div className='card-bg'>
-        <h2 className="mb-4 text-center text-white">Sign Up</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="border p-3 rounded shadow">
+        <form onSubmit={handleSubmit(onSubmit)} className="card border p-2 rounded shadow" style={{ marginLeft: '200px', width: '500px'}}>
+          <h2 className="">Sign Up</h2>
           {formFields.map(field => (
-            <div className="form-group" key={field.name}>
+            <div className="form-group mb-3" key={field.name}>
               <input
                 type={field.type}
                 className={`form-control ${errors[field.name] ? 'is-invalid' : ''}`}
@@ -80,22 +78,21 @@ const SignUp = () => {
               {errors[field.name] && <div className="invalid-feedback">{errors[field.name].message}</div>}
             </div>
           ))}
-          <div className="form-group form-check">
-          <input
-    type="checkbox"
-    className={`form-check-input ${errors.termsAccepted ? 'is-invalid' : ''}`}
-    {...register("termsAccepted", { required: true })} 
-/>
-
-            <label className="form-check-label text-white">
+          <div className="form-group form-check mb-3">
+            <input
+              type="checkbox"
+              className={`form-check-input ${errors.termsAccepted ? 'is-invalid' : ''}`}
+              {...register("termsAccepted", { required: true })}
+            />
+            <label className="form-check-label text-dark">
               I accept the terms and conditions
             </label>
             {errors.termsAccepted && <div className="invalid-feedback">{errors.termsAccepted.message}</div>}
           </div>
-          <button type="submit" className="btn bg-dark btn-block text-white">Create Account</button>
-          <p className="text-center mt-3 text-white">
+          <button type="submit" className="btn bg-secondary btn-block text-white mb-3">Create Account</button>
+          <p className="text-center mt-3 text-dark">
             Already a member? Let’s pick up where you left off! 
-            <Link to="/SignIn" className='text-white'> Sign In</Link>
+            <Link to="/" className='text-primary'> Sign In</Link>
           </p>
         </form>
       </div>

@@ -4,11 +4,14 @@ body {
   margin: 0;
   padding: 0;
 }
+
 .container {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* This allows the items to wrap on smaller screens */
   justify-content: center;
+  padding: 50px 15px;
 }
+
 .card {
   background-color: #fff;
   border-radius: 10px;
@@ -18,21 +21,26 @@ body {
   transition: transform 0.2s;
   width: 300px;
 }
+
 .card:hover {
   transform: scale(1.05);
 }
+
 h2 {
   text-align: center;
   color: #333;
 }
+
 .form-group {
   margin-bottom: 15px;
 }
+
 label {
   display: block;
   margin-bottom: 5px;
   color: #555;
 }
+
 input {
   width: 100%;
   padding: 10px;
@@ -45,13 +53,16 @@ input:focus {
   border-color: #007bff;
   outline: none;
 }
+
 .is-invalid {
   border-color: #dc3545;
 }
+
 .invalid-feedback {
   color: #dc3545;
   font-size: 0.875em;
 }
+
 .btn {
   width: 100%;
   padding: 10px;
@@ -63,88 +74,91 @@ input:focus {
   font-size: 1em;
   transition: background-color 0.2s;
 }
+
 .btn:hover {
   background-color: #0056b3;
 }
-@media (max-width: 600px) {
-  .card {
-    width: 100%;
-  }
-}
+
 body, html {
   height: 100%;
   margin: 0;
 }
+
 .bg-image {
-  background-image: url('../src/assets/backfinal.jpg'); 
-  /* background-color: #EFDD6F; */
-  background-size: cover; 
-  background-position: center; 
-  min-height: 100vh; 
-  display: flex; 
-  flex-direction: column; 
-  /* justify-content: center; 
-  align-items: center;   */
-  position: sticky; 
+  background-image: url('../src/assets/backgroundfinal.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
 }
+
 .container {
-   /* background-color:white;   */
   border-radius: 10px;
   padding: 30px;
 }
-.navbar {
-  background-color:#9e7049; 
-  position: absolute;
-  width: 100%;
-  height:100px; 
-  z-index: 1000; 
-}
 
-.navbar-brand,
-.nav-link {
-  font-size: 0.9rem; 
-}
-
- .card-bg {
+.card-bg {
   width: 400px;
   padding: 2rem;
-  /* background-image: url("../src/asserts/back.png");  */
-  
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-} 
-.container {
-  padding: 50px 0; 
 }
 
-
-.card {
-  transition: transform 0.2s;
+@media (max-width: 1200px) {
+  /* Large screens (tablets in landscape, laptops) */
+  .col-md-6 {
+    width: 50%; /* Each card takes up 50% of the width */
+  }
 }
 
-.card:hover {
-  transform: scale(1.05);
-}
-.sidebar img{
-  height: 50px;
-  width:50px;
-  cursor:pointer;
-}
-.sidebar{
-  display: flex;
-  flex-direction: column;
-  gap: 40%;
+@media (max-width: 992px) {
+  /* Medium screens (tablets in portrait) */
+  .col-md-6 {
+    width: 100%; /* Cards should take full width */
+  }
 
+  .col-10, .col-8, .col-6 {
+    width: 100%; /* Make all columns stack vertically */
+  }
 }
-.sidebar_list{
-  display: flex;
-  flex-direction: column;
-  gap:40px;
-  align-items: center;
+
+@media (max-width: 768px) {
+  /* Small screens (phones in landscape) */
+  .col-md-6 {
+    width: 100%; /* Make cards take full width */
+  }
+
+  .col-10, .col-8, .col-6 {
+    width: 100%; /* Stack the columns */
+  }
+
+  .card {
+    width: 90%; /* Cards take up most of the width on smaller screens */
+  }
 }
-.sidebar_list_items{
-  border-radius: 50px;
-  
+
+@media (max-width: 480px) {
+  /* Extra small screens (phones in portrait) */
+  .col-md-6 {
+    width: 100%; /* Cards take full width */
+  }
+
+  .card {
+    width: 100%; /* Ensure cards take full width */
+    margin: 10px 0; /* Adjust margin between cards */
+  }
+
+  .btn {
+    padding: 12px;
+    font-size: 1.1em;
+  }
+
+  .container {
+    padding: 20px 10px; /* Adjust container padding */
+  }
 }
