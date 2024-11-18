@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';  
+import { Link, useNavigate } from 'react-router-dom';  
 import { useSigninMutation } from '../redux/Service/SignUpApi';
 
 const schema = yup.object().shape({
@@ -15,7 +15,8 @@ const Home = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema),
   });
-  const [signin, { isLoading, isError, error }] = useSigninMutation(); 
+  const [signin, { isLoading, isError, error }] = useSigninMutation();
+  const navigate = useNavigate();  
 
   const onSubmit = async (data) => {
     try {
@@ -28,6 +29,9 @@ const Home = () => {
         localStorage.setItem('RefreshToken', refreshToken);
         reset(); 
         console.log("User signed in successfully.");
+
+       
+        navigate('/Note');
       } else {
         console.error('Access token not found in the result.');
       }
@@ -54,7 +58,7 @@ const Home = () => {
           </div>
 
           <div className="col-8 mb-4">
-            <div className="card bg-info text-dark">
+            <div className="card bg-info text-white">
               <div className="card-body">
                 <h5 className="card-title">✅ To-Do Lists</h5>
                 <p className="card-text">Stay organized and keep track of your tasks effortlessly.</p>
@@ -63,7 +67,7 @@ const Home = () => {
           </div>
 
           <div className="col-6 mb-6">
-            <div className="card bg-warning text-dark">
+            <div className="card bg-warning text-white">
               <div className="card-body">
                 <h5 className="card-title">⏰ Reminders</h5>
                 <p className="card-text">Set reminders for tasks and never miss a deadline.</p>
@@ -71,13 +75,12 @@ const Home = () => {
             </div>
           </div>
           
-          
           <div className="col-md-6" style={{ marginTop: '-500px', marginLeft: '1000px' }}>
             <div className="card w-75" >
               <div className="card-body mt-4">
-                <h3 className="card-title text-center">Sign In</h3><br></br>
+                <h3 className="card-title text-center">Sign In</h3><br />
                 <form onSubmit={handleSubmit(onSubmit)}>
-                 <div className="form-group">
+                  <div className="form-group">
                     <input
                       type="email"
                       className={`form-control ${errors.email ? 'is-invalid' : ''}`}
@@ -86,8 +89,7 @@ const Home = () => {
                     /> 
                     {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
                   </div>
-<br></br>
-                  {/* Password Input */}
+                  <br />
                   <div className="form-group">
                     <input
                       type="password"
@@ -102,7 +104,7 @@ const Home = () => {
                   </div>
 
                   <br />
-                  <button type="submit" className="btn bg-secondary btn-block text-lite" disabled={isLoading}>
+                  <button type="submit" className="btn bg-info btn-block text-lite" disabled={isLoading}>
                     {isLoading ? 'Logging in...' : "Login"}
                   </button>
                   <br />
