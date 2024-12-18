@@ -7,9 +7,7 @@ const store = configureStore({
   reducer:{
     [SignupApi.reducerPath]:SignupApi.reducer,
     [notesApi.reducerPath]: notesApi.reducer,
-   
-    
-},
+   },
     middleware:(getDefaultMiddleware)=>
     getDefaultMiddleware({}).concat([SignupApi.middleware,notesApi.middleware])
 })

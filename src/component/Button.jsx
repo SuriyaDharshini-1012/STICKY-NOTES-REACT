@@ -1,15 +1,12 @@
 import React from 'react';
 
-const Button = ({ className, id, type, onSubmit, handleSubmit }) => {
-    return (
-        <button 
-            className={className} 
-            id={id} 
-            type={type} 
-            onClick={handleSubmit}>
-            {onSubmit}
-        </button>
-    );
+const Button = ({ children, onClick, className ,type, style}) => {
+  return (
+    <button onClick={onClick} className={className} type={type} style={style}>
+      {children}
+    </button>
+  );
 };
+
 
 export default Button;

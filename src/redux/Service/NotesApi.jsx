@@ -10,44 +10,42 @@ export const notesApi = createApi({
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
-      return headers;
+    return headers;
     },
   }),
   endpoints: (builder) => ({
-    // Fetch all notes (GET request)
-    getNotes: builder.query({
-      query: () => 'notes', // Adjust the endpoint URL according to your API
+     getNotes: builder.query({
+      query: () => 'notes', 
     }),
 
-    createNote: builder.mutation({
-      query: ({ title, content, colour, isPinned }) => ({
+  getNotesByUserId: builder.query({
+    query: (userId) => `/notes/${userId}`,
+    }),
+
+  createNote: builder.mutation({
+      query: ({  content, colour }) => ({
         url: 'create-note',
         method: 'POST',
         params: {
-          title,
           content,
           colour,
-          isPinned,
         },
       }),
     }),
-
-    updateNote: builder.mutation({
-      query: ({ id, title, content, colour, isPinned }) => ({
+updateNote: builder.mutation({
+      query: ({ id,  content, colour, }) => ({
         url: `update-note/${id}`,
         method: 'PUT',
         body: {
-          title,
           content,
           colour,
-          isPinned,
+    
         },
       }),
     }),
-
-    deleteNote: builder.mutation({
+deleteNote: builder.mutation({
       query: (id) => ({
-        url: `delete-note/${id}`,
+        url:`delete-note/${id}`,
         method: 'DELETE',
       }),
     }),
@@ -55,8 +53,9 @@ export const notesApi = createApi({
 });
 
 export const {
-  useGetNotesQuery,        // Added this line to export the query hook for fetching notes
+  useGetNotesByUserIdQuery,   
   useCreateNoteMutation,
   useDeleteNoteMutation,
   useUpdateNoteMutation,
+  useGetNotesQuery
 } = notesApi;

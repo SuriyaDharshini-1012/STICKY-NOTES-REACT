@@ -1,5 +1,4 @@
 
-
 const TextArea=({placeholder,value,onChange,className})=>{
 
     return(
@@ -8,12 +7,7 @@ const TextArea=({placeholder,value,onChange,className})=>{
             className={className}
             value={value}
             placeholder={placeholder}
-            onChange={onChange}
-
-            
-            ></textarea>
-        </div>
-    )
-
+            onChange={onChange}></textarea>
+        </div>)
 }
 export default TextArea;

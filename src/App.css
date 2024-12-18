@@ -1,24 +1,24 @@
-body {
+ body {
   background-color: hsl(0, 0%, 94%);
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
+  overflow: 'hidden';
 }
-
 .container {
   display: flex;
   flex-wrap: wrap; 
   justify-content: center;
   padding: 50px 15px;
+ 
 }
-
 .card {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 15px;
   padding: 20px;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease-in-out;
   width: 300px;
 }
 
@@ -26,20 +26,13 @@ body {
   transform: scale(1.05);
 }
 
-h2 {
-  text-align: center;
-  color: #333;
-}
+
 
 .form-group {
   margin-bottom: 15px;
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-  color: #555;
-}
+
 
 input {
   width: 100%;
@@ -48,25 +41,13 @@ input {
   border-radius: 5px;
   box-sizing: border-box;
 }
-
-input:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
 .is-invalid {
   border-color: #dc3545;
 }
-
-.invalid-feedback {
-  color: #dc3545;
-  font-size: 0.875em;
-}
-
 .btn {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -75,33 +56,27 @@ input:focus {
   transition: background-color 0.2s;
 }
 
-.btn:hover {
-  background-color: #0056b3;
-}
 
 body, html {
   height: 100%;
   margin: 0;
+  padding:0;
+}
+.bg-sand {
+  background-color: #F4E1C1; 
 }
 
 .bg-image {
   background-image: url('../src/assets/backgroundfinal.jpg');
   background-size: cover;
-  background-position: center;
-  min-height: 100vh;
+ 
+  height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   position: fixed;
-  background-attachment: fixed;
-
-}
-
-.container {
-  border-radius: 10px;
-  padding: 30px;
-}
-
+  
+ }
 .card-bg {
   width: 400px;
   padding: 2rem;
@@ -109,58 +84,59 @@ body, html {
   display: flex;
   flex-direction: column;
   justify-content: center;
+ 
 }
 
-@media (max-width: 1200px) {
-  /* Large screens (tablets in landscape, laptops) */
-  .col-md-6 {
-    width: 50%; /* Each card takes up 50% of the width */
-  }
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
-@media (max-width: 992px) {
-  /* Medium screens (tablets in portrait) */
-  .col-md-6 {
-    width: 100%; /* Cards should take full width */
+.btn{
+  font-size: 0.85em;
+  padding:15px;
+}
+
+
+.row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .bg-image {
+    background-image: none;
   }
 
-  .col-10, .col-8, .col-6 {
-    width: 100%; /* Make all columns stack vertically */
+  .bg-image .card {
+    max-width: 200%;
   }
 }
 
 @media (max-width: 768px) {
-  /* Small screens (phones in landscape) */
-  .col-md-6 {
-    width: 100%; /* Make cards take full width */
-  }
-
-  .col-10, .col-8, .col-6 {
-    width: 100%; /* Stack the columns */
-  }
-
   .card {
-    width: 90%; /* Cards take up most of the width on smaller screens */
+    width: 270px !important; 
   }
 }
 
-@media (max-width: 480px) {
-  /* Extra small screens (phones in portrait) */
-  .col-md-6 {
-    width: 100%; /* Cards take full width */
-  }
 
-  .card {
-    width: 100%; /* Ensure cards take full width */
-    margin: 10px 0; /* Adjust margin between cards */
-  }
 
-  .btn {
-    padding: 12px;
-    font-size: 1.1em;
-  }
 
-  .container {
-    padding: 20px 10px; /* Adjust container padding */
-  }
-}
+
+
+ 
+
+ 
